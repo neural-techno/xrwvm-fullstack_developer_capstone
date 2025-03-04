@@ -124,3 +124,43 @@ img{
     text-align:center;
     box-shadow: 2px 2px 3px #999;  
 }
+.contact-container {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-top: 2rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+  color: #333;
+}
+
+.branch-card {
+  background-color: #f0f0f0;
+  padding: 20px;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.branch-card:hover {
+  transform: translateY(-5px);
+}
+
+.branch-info {
+  color: #333;
+}
+
+.branch-info p {
+  font-size: 1rem;
+  color: #555;
+  margin: 0.5rem 0;
+}
+
+.branch-info h3 {
+  color: darkturquoise;
+  font-size: 1.5rem;
+  font-weight: bold;
+}

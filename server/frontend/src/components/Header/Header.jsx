@@ -33,7 +33,7 @@ let curr_user = sessionStorage.getItem('username')
 if ( curr_user !== null &&  curr_user !== "") {
     home_page_items = <div className="input_panel">
       <text className='username'>{sessionStorage.getItem("username")}</text>
-    <a className="nav_item" href="/djangoapp/logout" onClick={logout}>Logout</a>
+    l<a className="nav_item" href="/djangoapp/logout" onClick={logout}>Logout</a>
   </div>
 }
     return (

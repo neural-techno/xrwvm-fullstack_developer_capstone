@@ -11,6 +11,7 @@ from .populate import initiate
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
+
 # Create a `login_request` view to handle sign-in request
 @csrf_exempt
 def login_user(request):
@@ -68,7 +69,10 @@ def registration(request):
         username_exist = User.objects.filter(username=username).exists()
 
         if username_exist:
-            return JsonResponse({"userName": username, "error": "Already Registered"})
+            return JsonResponse({
+                "userName": username,
+                "error": "Already Registered"
+            })
 
         # Create user in auth_user table
         user = User.objects.create_user(
@@ -97,7 +101,8 @@ def registration(request):
 def get_dealerships(request, state="All"):
     """Fetches dealership data, either all or by specific state."""
     try:
-        endpoint = f"/fetchDealers/{state}" if state != "All" else "/fetchDealers"
+        endpoint = (f"/fetchDealers/{state}" if state != "All"
+                    else "/fetchDealers")
         dealerships = get_request(endpoint)
         return JsonResponse({
             "status": 200,
@@ -117,8 +122,13 @@ def get_dealer_reviews(request, dealer_id):
             reviews = get_request(endpoint)
 
             for review_detail in reviews:
-                sentiment_response = analyze_review_sentiments(review_detail['review'])
-                review_detail['sentiment'] = sentiment_response.get('sentiment', 'Unknown')
+                sentiment_response = analyze_review_sentiments(
+                    review_detail['review']
+                )
+                review_detail['sentiment'] = sentiment_response.get(
+                    'sentiment',
+                    'Unknown'
+                )
 
             return JsonResponse({"status": 200, "reviews": reviews})
 

@@ -1,23 +1,56 @@
 # Uncomment the following imports before adding the Model code
 
 from django.db import models
-from django.utils.timezone import now
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 # Create your models here.
 class CarMake(models.Model):
+    """
+    Represents a car make (e.g., Toyota, Ford, etc.).
+
+    The CarMake model stores information about the car manufacturer,
+    including the name, description, country of origin, and the date
+    the brand was established.
+
+    Attributes:
+        name (str): The name of the car manufacturer.
+        description (str): A description of the car manufacturer.
+        country_of_origin (str, optional): The country where the car manufacturer is based.
+        established_date (date, optional): The date when the car manufacturer was established.
+    """
+
     name = models.CharField(max_length=100)
     description = models.TextField()
-    country_of_origin = models.CharField(max_length=100, blank=True, null=True)  # Optional: field for the country of origin
-    established_date = models.DateField(blank=True, null=True)  # Optional: field for the year when the brand was established
+    country_of_origin = models.CharField(max_length=100, blank=True, null=True)
+    established_date = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return self.name  # Return the name as the string representation
 
 
 class CarModel(models.Model):
-    car_make = models.ForeignKey(CarMake, on_delete=models.CASCADE)  # Many-to-One relationship
+    """
+    Represents a car model associated with a specific car make (e.g., Camry, Mustang, etc.).
+
+    The CarModel model stores details about a specific model of a car,
+    including its make, type, year, engine type, fuel type, color, price,
+    mileage, horsepower, and transmission.
+
+    Attributes:
+        car_make (ForeignKey): A reference to the CarMake model representing the car's manufacturer.
+        name (str): The name of the car model (e.g., Camry, A-Class).
+        type (str): The type of the car (e.g., Sedan, SUV, Wagon).
+        year (int): The year the car model was manufactured.
+        engine_type (str, optional): The type of engine in the car.
+        fuel_type (str): The fuel type used by the car (e.g., Petrol, Diesel, Electric, Hybrid).
+        color (str, optional): The color of the car.
+        price (decimal, optional): The price of the car.
+        mileage (float, optional): The mileage of the car.
+        horsepower (int, optional): The horsepower of the car's engine.
+        transmission (str): The type of transmission in the car (e.g., Automatic, Manual).
+    """
+    car_make = models.ForeignKey(CarMake, on_delete = models.CASCADE)
     name = models.CharField(max_length=100)
     CAR_TYPES = [
         ('SEDAN', 'Sedan'),
@@ -31,12 +64,25 @@ class CarModel(models.Model):
             MaxValueValidator(2023),
             MinValueValidator(2015)
         ])
-    engine_type = models.CharField(max_length=50, blank=True, null=True)  # Engine type (e.g., V6, V8, Electric)
-    fuel_type = models.CharField(max_length=20, choices=[('PETROL', 'Petrol'), ('DIESEL', 'Diesel'), ('ELECTRIC', 'Electric'), ('HYBRID', 'Hybrid')], default='PETROL')  # Fuel type
-    color = models.CharField(max_length=30, blank=True, null=True)  # Car color
-    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)  # Price of the car model
-    mileage = models.FloatField(blank=True, null=True)  # Mileage (miles per gallon or km per liter)
-    horsepower = models.IntegerField(blank=True, null=True)  # Engine horsepower
-    transmission = models.CharField(max_length=20, choices=[('AUTOMATIC', 'Automatic'), ('MANUAL', 'Manual')], default='AUTOMATIC')  # Transmission type
+    engine_type = models.CharField(max_length=50, blank=True, null=True)
+    fuel_type = models.CharField(
+        max_length=20,
+        choices=[
+            ('PETROL', 'Petrol'),
+            ('DIESEL', 'Diesel'),
+            ('ELECTRIC', 'Electric'),
+            ('HYBRID', 'Hybrid')
+        ],
+        default='PETROL'
+    )
+    color = models.CharField(max_length=30, blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    mileage = models.FloatField(blank=True, null=True)
+    horsepower = models.IntegerField(blank=True, null=True)
+    transmission = models.CharField(
+        max_length=20,
+        choices=[('AUTOMATIC', 'Automatic'), ('MANUAL', 'Manual')],
+        default='AUTOMATIC'
+    )
     def __str__(self):
-        return self.name  # Return the name as the string representation
+        return self.name

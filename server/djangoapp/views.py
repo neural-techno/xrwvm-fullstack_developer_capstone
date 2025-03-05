@@ -1,7 +1,6 @@
 import json
 import logging
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
@@ -36,11 +35,13 @@ def login_user(request):
         logger.exception("An error occurred while logging in")
         return JsonResponse({"error": str(e)})
 
+
 # Create a `logout_request` view to handle sign-out request
 def logout_user(request):
     """Logs out the user."""
     logout(request)
     return JsonResponse({"userName": ""})
+
 
 # Create a `registration` view to handle sign-up request
 @csrf_exempt
@@ -76,6 +77,7 @@ def registration(request):
         logger.exception("An error occurred during registration")
         return JsonResponse({"error": str(e)})
 
+
 # Update the `get_dealerships` render list of dealerships
 def get_dealerships(request, state="All"):
     """Fetches dealership data, either all or by specific state."""
@@ -88,6 +90,7 @@ def get_dealerships(request, state="All"):
         logger.exception("An error occurred while fetching dealerships")
         return JsonResponse({"status": 500, "message": str(e)})
 
+
 def get_dealer_reviews(request, dealer_id):
     """Fetches dealer reviews and analyzes sentiment."""
     try:
@@ -96,8 +99,8 @@ def get_dealer_reviews(request, dealer_id):
             reviews = get_request(endpoint)
 
             for review_detail in reviews:
-                response = analyze_review_sentiments(review_detail['review'])
-                review_detail['sentiment'] = response.get('sentiment', 'Unknown')
+                sentiment_response = analyze_review_sentiments(review_detail['review'])
+                review_detail['sentiment'] = sentiment_response.get('sentiment', 'Unknown')
 
             return JsonResponse({"status": 200, "reviews": reviews})
 
@@ -106,6 +109,7 @@ def get_dealer_reviews(request, dealer_id):
     except Exception as e:
         logger.exception("An error occurred while fetching reviews")
         return JsonResponse({"status": 500, "message": str(e)})
+
 
 def get_dealer_details(request, dealer_id):
     """Fetches details of a specific dealer."""
@@ -121,6 +125,7 @@ def get_dealer_details(request, dealer_id):
         logger.exception("An error occurred while fetching dealer details")
         return JsonResponse({"status": 500, "message": str(e)})
 
+
 # Create a `add_review` view to submit a review
 @csrf_exempt
 def add_review(request):
@@ -128,7 +133,7 @@ def add_review(request):
     try:
         if not request.user.is_anonymous:
             data = json.loads(request.body)
-            response = post_review(data)
+            post_review_response = post_review(data)
             return JsonResponse({"status": 200})
 
         return JsonResponse({"status": 403, "message": "Unauthorized"})
@@ -139,6 +144,7 @@ def add_review(request):
     except Exception as e:
         logger.exception("An error occurred while posting review")
         return JsonResponse({"status": 500, "message": str(e)})
+
 
 # Get List of Cars
 def get_cars(request):

@@ -22,7 +22,7 @@ def get_request(endpoint, **kwargs):
     try:
         # Make GET request to the backend URL with parameters
         response = requests.get(request_url)
-        response.raise_for_status()  # Raise an exception for HTTP error responses
+        response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException:
         # Catch network or HTTP exceptions
@@ -35,7 +35,7 @@ def analyze_review_sentiments(text):
     try:
         # Make GET request to sentiment analyzer API
         response = requests.get(request_url)
-        response.raise_for_status()  # Raise an exception for HTTP error responses
+        response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as err:
         print(f"Unexpected {err=}, {type(err)=}")
@@ -48,7 +48,7 @@ def post_review(data_dict):
     try:
         # Make POST request to backend server to insert review
         response = requests.post(request_url, json=data_dict)
-        response.raise_for_status()  # Raise an exception for HTTP error responses
+        response.raise_for_status()
         print(response.json())
         return response.json()
     except requests.exceptions.RequestException:

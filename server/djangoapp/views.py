@@ -24,9 +24,16 @@ def login_user(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return JsonResponse({"userName": username, "status": "Authenticated"})
+                return JsonResponse(
+                    {
+                        "userName": username,
+                        "status": "Authenticated"
+                    })
 
-        return JsonResponse({"userName": username, "status": "Invalid credentials"})
+        return JsonResponse({
+            "userName": username,
+            "status": "Invalid credentials"
+        })
 
     except json.JSONDecodeError:
         logger.exception("JSON decode error")
@@ -64,11 +71,19 @@ def registration(request):
             return JsonResponse({"userName": username, "error": "Already Registered"})
 
         # Create user in auth_user table
-        user = User.objects.create_user(username=username, first_name=first_name,
-                                        last_name=last_name, password=password, email=email)
+        user = User.objects.create_user(
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            password=password,
+            email=email
+        )
         login(request, user)
 
-        return JsonResponse({"userName": username, "status": "Authenticated"})
+        return JsonResponse({
+            "userName": username,
+            "status": "Authenticated"
+        })
 
     except json.JSONDecodeError:
         logger.exception("JSON decode error")
@@ -84,7 +99,10 @@ def get_dealerships(request, state="All"):
     try:
         endpoint = f"/fetchDealers/{state}" if state != "All" else "/fetchDealers"
         dealerships = get_request(endpoint)
-        return JsonResponse({"status": 200, "dealers": dealerships})
+        return JsonResponse({
+            "status": 200,
+            "dealers": dealerships
+        })
 
     except Exception as e:
         logger.exception("An error occurred while fetching dealerships")
@@ -133,7 +151,7 @@ def add_review(request):
     try:
         if not request.user.is_anonymous:
             data = json.loads(request.body)
-            post_review_response = post_review(data)
+            post_review(data)
             return JsonResponse({"status": 200})
 
         return JsonResponse({"status": 403, "message": "Unauthorized"})

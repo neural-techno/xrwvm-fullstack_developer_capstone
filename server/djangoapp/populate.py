@@ -11,8 +11,8 @@ def initiate():
 
     car_make_data = [
         {
-            "name": "NISSAN", 
-            "description": "Great cars. Japanese technology", 
+            "name": "NISSAN",
+            "description": "Great cars. Japanese technology",
             "country_of_origin": "Japan",
             "established_date": "1933-12-26"
         },

@@ -38,17 +38,17 @@ class CarModel(models.Model):
     mileage, horsepower, and transmission.
 
     Attributes:
-        car_make (ForeignKey): 
+        car_make (ForeignKey):
         name (str): The name of the car model (e.g., Camry, A-Class).
         type (str): The type of the car (e.g., Sedan, SUV, Wagon).
         year (int): The year the car model was manufactured.
         engine_type (str, optional): The type of engine in the car.
-        fuel_type (str): 
+        fuel_type (str):
         color (str, optional): The color of the car.
         price (decimal, optional): The price of the car.
         mileage (float, optional): The mileage of the car.
         horsepower (int, optional): The horsepower of the car's engine.
-        transmission (str): 
+        transmission (str):
     """
     car_make = models.ForeignKey(CarMake, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
@@ -59,11 +59,12 @@ class CarModel(models.Model):
         # Add more choices as required
     ]
     type = models.CharField(max_length=10, choices=CAR_TYPES, default='SUV')
-    year = models.IntegerField(default=2023,
-    validators = [
-        MaxValueValidator(2023),
-        MinValueValidator(2015)
-    ])
+    year = models.IntegerField(
+        default=2023,
+        validators = [
+            MaxValueValidator(2023),
+            MinValueValidator(2015)
+        ])
     engine_type = models.CharField(max_length=50, blank=True, null=True)
     fuel_type = models.CharField(
         max_length=20,
@@ -87,5 +88,6 @@ class CarModel(models.Model):
         choices=[('AUTOMATIC', 'Automatic'), ('MANUAL', 'Manual')],
         default='AUTOMATIC'
     )
+
     def __str__(self):
         return self.name
